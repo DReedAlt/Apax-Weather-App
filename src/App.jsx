@@ -12,18 +12,13 @@ export default function App() {
         .then(userLoggedIn => updateLoggedIn(userLoggedIn))
         .catch(err => console.error(err));
     });
-    console.log('loggedIn: ', loggedIn);
+    
     return (
         <Router>
             <Switch>
-                {loggedIn && 
-                    <Switch>
-                        <Route component={Home} />
-                    </Switch>
-                }
-                <Route exact path='/signup' component={Signup} />
-                <Route exact path='/login' component={Login} />
-                <Route component={Login} />
+                <Route exact path='/signup' render={() => <Signup updateLoggedIn={updateLoggedIn} />} />
+                <Route exact path='/login' render={() => <Login updateLoggedIn={updateLoggedIn} />} />
+                <Route path='/' render={() => loggedIn ? <Home /> : <Login updateLoggedIn={updateLoggedIn} />} />
             </Switch>
         </Router>
     )

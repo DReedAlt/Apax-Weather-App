@@ -1,24 +1,17 @@
-const bodyParser = require('body-parser');
-    express = require('express');
-    app = express();
-    session = require('express-session');
+const express = require('express'),
+    app = express(),
+    session = require('express-session'),
     morgan = require('morgan'),
+    cors = require('cors'),
+    bodyparser = require('body-parser'),
     passport = require('passport'),
-    path = require('path'); 
+    User = require('./db/models/User.js'),
+    path = require('path'),
     PORT = process.env.PORT || 8888;
 
-//initialize environment variables if not in a production environment. 
-// should have a local 'secrets' folder that is not tracked by git
-if (process.env.NODE_ENV !== 'production') require('../secrets');
+//initialize environment variables
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'develop') require('../secrets');
 
-//body parsing middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-//loggin middleware
-app.use(morgan('dev'));
-
-//start an express session
 app.use(session({
     secret: 'devSecret',
     expire: 24 * 60 * 60 * 1000,
@@ -27,10 +20,17 @@ app.use(session({
     cookie: {secure: false}
 }));
 
-//serialize and deserialize the user with passport based on id
+app.use(morgan('dev'));
+
+app.use(cors());
+
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
+
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
+
 passport.deserializeUser(function(id, done) {
     User.findById(id, (err, user) => {
         if (err) return done(err);
@@ -38,18 +38,14 @@ passport.deserializeUser(function(id, done) {
     })
 });
 
-//initialize passport session
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize())
+app.use(passport.session())
 
-//hit routing middleware
 app.use('/api', require('./routes/api'));
+app.use('/auth', require('./routes/auth'));
 
-//statically serve anything asked for in the public dist folder
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
-//client should not be requesting files that aren't in the dist folder,
-//if they do, send a 404 error
 app.use((req, res, next) => {
     if (path.extname(req.path).length) {
         const err = new Error('Not found');
@@ -60,21 +56,20 @@ app.use((req, res, next) => {
     }
 });
 
-//for all other requests, just send the main html page
 app.use('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'dist/index.html'));
 });
 
-//error handling middleware - all server errors will end up here
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     console.error(err);
     console.error(err.stack);
     res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
 
-//start the server
 app.listen(PORT, async () => {
-    console.log('connecting to db...');
+    console.log('connecting to db....');
     await require('./db');
-    console.log(`server listening on port ${PORT}`);
+    console.log(`listening on port ${PORT}`);
 });
+
+module.exports = app;

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const User = require('../../db/models/User.js');
+const User = require('../db/models/User.js');
 module.exports = router;
 
 router.post('/login', (req, res, next) => {
@@ -33,13 +33,19 @@ router.post('/signup', (req, res, next) => {
     }, (err, found) => {
         if (err) return next(err);
         if (found) return res.status(200).send('username already exists');
-        User.create(user, (err, user) => {
+        User.create(user, (err, newUser) => {
             if (err) {
                 return next(err);
             }
-            res.status(201).send('User created!');
+            req.login(newUser, err => (err ? next(err) : res.status(200).send('User created!')))
         });
     });
+});
+
+router.post('/logout', (req, res) => {
+    req.logout();
+    req.session.destroy();
+    res.redirect('/');
 });
 
 router.get('/loggedIn', (req, res, next) => {

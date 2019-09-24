@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Button, FormLabel, TextField } from '@material-ui/core';
 import axios from 'axios';
 
-export default function Signup ({updateLoggedIn, history}) {
+function Signup ({history, updateLoggedIn}) {
     const [password, setPassword] = useState('');
     const [verifyPassword, setVerifyPassword] = useState('');
     const [verifyDirty, setVerifyDirty] = useState(false);
@@ -21,22 +22,23 @@ export default function Signup ({updateLoggedIn, history}) {
     }
     
     const signup = (e) => {
+        e.preventDefault();
         const username = e.target.username.value;
         const password = e.target.password.value;
         const verifyPassword = e.target.verifyPassword.value;
         if (password === verifyPassword) {
             axios.post('/auth/signup', {username, password})
             .then(res => {
-                console.log('res:', res);
                 updateLoggedIn(Boolean(res.data));
                 history.push('/');
-            });
+            })
+            .catch(err => console.error(err));
         }
     }
 
     return (
-        <form onSumbit={signup}>
-            <FormLabel>Login</FormLabel>
+        <form onSubmit={signup}>
+            <FormLabel>Sign Up</FormLabel>
             <TextField
                 label="user name"
                 name="username"
@@ -54,7 +56,9 @@ export default function Signup ({updateLoggedIn, history}) {
                 type="password"
                 onChange={handleVerifyPassword}
             />
-            <Button variant="primary" type="submit">Login</Button>
+            <Button variant="primary" type="submit">Sign Up</Button>
         </form>
     );
-}
+};
+
+export default withRouter(Signup);

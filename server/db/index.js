@@ -4,7 +4,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 let db = mongoose.connection;
 
 db.on('error', function(err){
-    console.log('connection error', err);
+    console.error('connection error', err);
 });
  
 db.once('open', function(){
