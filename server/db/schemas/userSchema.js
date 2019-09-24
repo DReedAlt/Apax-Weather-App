@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt'),
         email: String,
         password: String,
         username: String,
-        savedLocations: [String]
+        savedLocations: [String] //'<zip code>,<country code>'
     });
 
 userSchema.methods.verifyPassword = function (password, cb) {

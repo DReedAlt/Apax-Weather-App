@@ -7,7 +7,7 @@ const kToF = k => {
     return (k - 273.15) * (9 / 5) + 32;
 };
 
-function LocationInput({saveLocation}) {
+function LocationInput() {
     const [currentWeather, setCurrentWeather] = useState({});
 
     const description = currentWeather.weather ? currentWeather.weather[0].description : '';
@@ -19,22 +19,20 @@ function LocationInput({saveLocation}) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const cityName = e.target.cityName.value;
         const zipCode = e.target.zipCode.value;
         const countryCode = e.target.countryCode.value;
         axios.post('/api/locationCurrentWeather', {
-            cityName,
             zipCode,
             countryCode
         })
         .then(({data}) => {
-            setCurrentWeather(Object.assign({}, currentWeather, data));
+            setCurrentWeather(Object.assign({}, {zipCode, countryCode}, data));
         })
         .catch(err => console.error(err));
     };
     const handleSaveLocation = () => {
-        const {locationId} = currentWeather;
-        axios.post('/api/saveLocation', {locationId})
+        const {zipCode, countryCode} = currentWeather;
+        axios.post('/api/saveLocation', {zipCode, countryCode})
         .then(res => res.data)
         .then(response => console.log(response))
         .catch(err => console.error(err));
@@ -43,10 +41,6 @@ function LocationInput({saveLocation}) {
     return (
         <div className='flex'>
             <form onSubmit={handleSubmit} className='half-width'>
-                <Input 
-                    name="cityName"
-                    placeholder="City..."
-                ></Input>
                 <Input 
                     name="zipCode"
                     placeholder="Zip Code..."

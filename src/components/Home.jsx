@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { AppBar, Button, Typography } from '@material-ui/core';
-import LocationInput from './LocationInput.jsx';
+import { LocationInput, LocationList } from './index.js';
 
-function Home ({history}) {
-    const [ currentLocation, setCurrentLocation ] = useState({});
+function Home ({history}) {    
+    const [savedLocations, setSavedLocations] = useState([]);
+
+    useEffect(() => {
+        axios.get('/api/savedLocations')
+        .then(res => res.data)
+        .then(locations => setSavedLocations(locations))
+        .catch(err => console.error(err));
+    });
+    
     const logout = () => {
         axios.post('/auth/logout')
         .then(res => history.push('/login'))
         .catch(err => console.error(err));
     }
+
     return (
         <div>
             <AppBar>
@@ -22,7 +31,8 @@ function Home ({history}) {
             <Typography variant="body1">
                 Please enter a location you would like to see the weather for:  
             </Typography>
-            <LocationInput setLocation={setCurrentLocation}/>
+            <LocationInput/>
+            <LocationList locations={savedLocations} />
         </div>
     );
 }
