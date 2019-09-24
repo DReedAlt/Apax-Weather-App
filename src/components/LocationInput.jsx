@@ -25,12 +25,14 @@ function LocationInput({saveLocation}) {
         .catch(err => console.error(err));
     };
     const description = currentWeather.weather ? currentWeather.weather[0].description : '';
-    const temperature = currentWeather.main ? kToF(currentWeather.main.temp) : '';
-    console.log(description);
-    console.log('temperature: ', temperature);
+    const temperature = currentWeather.main ? Math.floor(kToF(currentWeather.main.temp)) : '';
+    const location = currentWeather.name ? {
+        city: currentWeather.name,
+        country: currentWeather.sys && currentWeather.sys.country
+    } : {};
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div className='flex'>
+            <form onSubmit={handleSubmit} className='half-width'>
                 <Input 
                     name="cityName"
                     placeholder="City..."
@@ -49,7 +51,14 @@ function LocationInput({saveLocation}) {
                     type="submit"
                 >Get Weather!</Button>
             </form>
-            <WeatherDisplay temperature={temperature} description={description} />
+            <div className="half-width">
+                <WeatherDisplay 
+                    className="half-width"
+                    description={description}
+                    location={location} 
+                    temperature={temperature} 
+                />
+            </div>
         </div>
     );
 };

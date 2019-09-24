@@ -13,7 +13,6 @@ function Home () {
                 Please enter a location you would like to see the weather for:  
             </Typography>
             <LocationInput setLocation={setCurrentLocation}/>
-            {/*currentLocation.id && <WeatherDisplay location={currentLocation} />*/}
         </div>
     );
 }

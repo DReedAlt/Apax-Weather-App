@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
     express = require('express');
     app = express();
     session = require('express-session');
+    morgan = require('morgan'),
     passport = require('passport'),
     path = require('path'); 
     PORT = process.env.PORT || 8888;
@@ -13,6 +14,9 @@ if (process.env.NODE_ENV !== 'production') require('../secrets');
 //body parsing middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//loggin middleware
+app.use(morgan('dev'));
 
 //start an express session
 app.use(session({
