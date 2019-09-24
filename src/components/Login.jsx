@@ -29,7 +29,7 @@ function Login ({history, updateLoggedIn}) {
                     name="password"
                     type="password"
                 />
-                <Button variant="primary" onClick={login}>Login</Button>
+                <Button variant="primary" type="submit">Login</Button>
             </form>
             <Typography>
                 If you would like to create an account, <Link to='/signup'>sign up here!</Link>

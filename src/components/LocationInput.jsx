@@ -9,6 +9,14 @@ const kToF = k => {
 
 function LocationInput({saveLocation}) {
     const [currentWeather, setCurrentWeather] = useState({});
+
+    const description = currentWeather.weather ? currentWeather.weather[0].description : '';
+    const temperature = currentWeather.main ? Math.floor(kToF(currentWeather.main.temp)) : '';
+    const location = currentWeather.name ? {
+        city: currentWeather.name,
+        country: currentWeather.sys && currentWeather.sys.country
+    } : {};
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const cityName = e.target.cityName.value;
@@ -24,12 +32,14 @@ function LocationInput({saveLocation}) {
         })
         .catch(err => console.error(err));
     };
-    const description = currentWeather.weather ? currentWeather.weather[0].description : '';
-    const temperature = currentWeather.main ? Math.floor(kToF(currentWeather.main.temp)) : '';
-    const location = currentWeather.name ? {
-        city: currentWeather.name,
-        country: currentWeather.sys && currentWeather.sys.country
-    } : {};
+    const handleSaveLocation = () => {
+        const {locationId} = currentWeather;
+        axios.post('/api/saveLocation', {locationId})
+        .then(res => res.data)
+        .then(response => console.log(response))
+        .catch(err => console.error(err));
+    };
+
     return (
         <div className='flex'>
             <form onSubmit={handleSubmit} className='half-width'>
@@ -49,7 +59,9 @@ function LocationInput({saveLocation}) {
                     color="primary"
                     variant="contained"
                     type="submit"
-                >Get Weather!</Button>
+                >
+                    Get Weather!
+                </Button>
             </form>
             <div className="half-width">
                 <WeatherDisplay 
@@ -58,6 +70,13 @@ function LocationInput({saveLocation}) {
                     location={location} 
                     temperature={temperature} 
                 />
+                <Button 
+                    color="primary" 
+                    variant="contained" 
+                    onClick={() => handleSaveLocation()}
+                >
+                    Save this location
+                </Button>
             </div>
         </div>
     );
