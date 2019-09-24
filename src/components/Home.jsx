@@ -2,17 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { AppBar, Button, Typography } from '@material-ui/core';
-import { LocationInput, LocationList } from './index.js';
+import { CircularProgress, LocationInput, LocationList } from './index.js';
 
 function Home ({history}) {    
     const [savedLocations, setSavedLocations] = useState([]);
+    const [loadingSavedLocations, setLoadingSavedLocations] = useState(false);
 
     useEffect(() => {
+        setLoadingSavedLocations(true);
         axios.get('/api/savedLocations')
         .then(res => res.data)
-        .then(locations => setSavedLocations(locations))
+        .then(locations => {
+            setSavedLocations(locations);
+            setLoadingSavedLocations(false);
+        })
         .catch(err => console.error(err));
-    });
+    }, []);
     
     const logout = () => {
         axios.post('/auth/logout')
@@ -32,7 +37,7 @@ function Home ({history}) {
                 Please enter a location you would like to see the weather for:  
             </Typography>
             <LocationInput/>
-            <LocationList locations={savedLocations} />
+            <LocationList locations={savedLocations} loading={loadingSavedLocations}/>
         </div>
     );
 }

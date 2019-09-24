@@ -37,7 +37,6 @@ function LocationInput() {
         .then(response => console.log(response))
         .catch(err => console.error(err));
     };
-
     return (
         <div className='flex'>
             <form onSubmit={handleSubmit} className='half-width'>
@@ -57,7 +56,7 @@ function LocationInput() {
                     Get Weather!
                 </Button>
             </form>
-            <div className="half-width">
+            <div className={`half-width ${!currentWeather.name && 'hide'}`}>
                 <WeatherDisplay 
                     className="half-width"
                     description={description}

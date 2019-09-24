@@ -1,11 +1,13 @@
 import React from 'react';
+import {CircularProgress} from '@material-ui/core';
 import WeatherDisplay from './WeatherDisplay.jsx';
 
 const kToF = k => {
     return (k - 273.15) * (9 / 5) + 32;
 };
 
-export default function LocationList({locations}) {
+export default function LocationList({locations, loading}) {
+    if (loading) return <CircularProgress />
     return (
         <ul>
             { locations ?
