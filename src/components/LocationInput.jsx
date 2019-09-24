@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Input, Typography } from '@material-ui/core';
+import WeatherDisplay from './WeatherDisplay.jsx';
 
 const kToF = k => {
     return (k - 273.15) * (9 / 5) + 32;
 };
 
-export default function LocationInput({saveLocation}) {
+function LocationInput({saveLocation}) {
     const [currentWeather, setCurrentWeather] = useState({});
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,4 +52,6 @@ export default function LocationInput({saveLocation}) {
             <WeatherDisplay temperature={temperature} description={description} />
         </div>
     );
-}
+};
+
+export default LocationInput;

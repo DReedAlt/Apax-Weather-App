@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const axios = require('axios');
 
-const buildOWMQuery = ({zipCode, cityName, countryCode}) => {
+const buildOWMQuery = ({locationId, zipCode, cityName, countryCode}) => {
     const baseUrl = 'api.openweathermap.org/data/2.5/weather';
     const keyQuery = `appid=${process.env.OWM_KEY}`;
     let queryString = '';

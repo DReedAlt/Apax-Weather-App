@@ -1,21 +1,30 @@
-import React, { useState } from 'react';
-import { Typography } from '@material-ui/core';
-import { LocationInput } from './components';
+import React, {useState, useEffect} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import axios from 'axios';
+import { Home, Login, Signup } from './components';
 
-function App () {
-    const [ currentLocation, setCurrentLocation ] = useState({});
+export default function App() {
+    const [loggedIn, updateLoggedIn] = useState(false);
+
+    useEffect(() => {
+        axios.get('/auth/loggedIn')
+        .then(res => res.data)
+        .then(userLoggedIn => updateLoggedIn(userLoggedIn))
+        .catch(err => console.error(err));
+    });
+    console.log('loggedIn: ', loggedIn);
     return (
-        <div>
-            <Typography variant="subtitle1" paragraph={true}>
-                Welcome to Apax Weather
-            </Typography>
-            <Typography variant="body1">
-                Please enter a location you would like to see the weather for:  
-            </Typography>
-            <LocationInput setLocation={setCurrentLocation}/>
-            {/*currentLocation.id && <WeatherDisplay location={currentLocation} />*/}
-        </div>
-    );
+        <Router>
+            <Switch>
+                {loggedIn && 
+                    <Switch>
+                        <Route component={Home} />
+                    </Switch>
+                }
+                <Route exact path='/signup' component={Signup} />
+                <Route exact path='/login' component={Login} />
+                <Route component={Login} />
+            </Switch>
+        </Router>
+    )
 }
-
-export default App;
