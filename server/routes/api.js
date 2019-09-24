@@ -1,23 +1,26 @@
 const router = require('express').Router();
 const axios = require('axios');
 
-router.get('/', (req, res, next) => {
-    console.log('api?');
-    return res.send('the api route');
-});
+const buildOWMQuery = ({zipCode, cityName, countryCode}) => {
+    const baseUrl = 'api.openweathermap.org/data/2.5/weather';
+    const keyQuery = `appid=${process.env.OWM_KEY}`;
+    let queryString = '';
+    if (zipCode) {
+        queryString = `zip=${zipCode}`;
+    }
+    if (cityName) {
+        queryString = `q=${cityName}`
+    }
+    return `https://${baseUrl}?${queryString},${countryCode}&${keyQuery}`;
+}
 
-router.post('/locationAutoComplete', async (req, res, next) => {
-    const { text } = req.body;
-    console.log('url: ', `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${process.env.ACCUWEATHER_KEY}&q=${text}`);
+router.post('/locationCurrentWeather', async (req, res, next) => {
+    const { zipCode, cityName, countryCode } = req.body;
+    const query = buildOWMQuery({zipCode, cityName, countryCode});
     try {
-        const response = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${process.env.ACCUWEATHER_KEY}&q=${text}`);
-        const data = await response.json();
-        console.log('response: ', response);
-        console.log('result: ', data);
-        // return res.status(201).json(data);
-        return res.send('nothing yet');
+        const response = await axios.get(query);
+        return res.status(200).json(response.data);
     } catch (error) {
-        console.log('error: ', error);
         return next(error);
     }
 });
