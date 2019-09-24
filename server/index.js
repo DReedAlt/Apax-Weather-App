@@ -14,6 +14,30 @@ if (process.env.NODE_ENV !== 'production') require('../secrets');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//start an express session
+app.use(session({
+    secret: 'devSecret',
+    expire: 24 * 60 * 60 * 1000,
+    resave: true,
+    saveUninitialized: false,
+    cookie: {secure: false}
+}));
+
+//serialize and deserialize the user with passport based on id
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+    User.findById(id, (err, user) => {
+        if (err) return done(err);
+        done(null, user);
+    })
+});
+
+//initialize passport session
+app.use(passport.initialize());
+app.use(passport.session());
+
 //hit routing middleware
 app.use('/api', require('./routes/api'));
 
