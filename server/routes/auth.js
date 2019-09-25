@@ -3,13 +3,14 @@ const User = require('../db/models/User.js');
 module.exports = router;
 
 router.post('/login', (req, res, next) => {
+    console.log('req.bod: ', req.body);
     User.findOne({
         username: req.body.username
     }, (err, user) => {
         if (err) {
             return next(err);
         }
-        if (!user) {
+        if (!user || !req.body.password) {
             res.status(401).send('User not found')
         } 
         user.verifyPassword(req.body.password, (err, verified) => {
