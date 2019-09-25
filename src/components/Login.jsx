@@ -6,8 +6,10 @@ import axios from 'axios';
 function Login ({history, updateLoggedIn}) {
     const login = (e) => {
         e.preventDefault();
-        const username = e.target.username.value;
-        const password = e.target.password.value;
+        // const username = e.target.username.value;
+        // const password = e.target.password.value;
+        const username = 'test';
+        const password = 'test';
         axios.post('/auth/login', {username, password})
         .then(res => {
             updateLoggedIn(Boolean(res.data));

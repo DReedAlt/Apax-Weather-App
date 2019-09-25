@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { AppBar, Button, Typography } from '@material-ui/core';
-import { CircularProgress, LocationInput, LocationList } from './index.js';
+import { LocationInput, LocationList } from './index.js';
 
 function Home ({history}) {    
     const [savedLocations, setSavedLocations] = useState([]);
     const [loadingSavedLocations, setLoadingSavedLocations] = useState(false);
-
-    useEffect(() => {
+    const loadWeatherData = () => {
         setLoadingSavedLocations(true);
         axios.get('/api/savedLocations')
         .then(res => res.data)
@@ -17,7 +16,9 @@ function Home ({history}) {
             setLoadingSavedLocations(false);
         })
         .catch(err => console.error(err));
-    }, []);
+    }
+    
+    useEffect(loadWeatherData, []);
     
     const logout = () => {
         axios.post('/auth/logout')
@@ -28,16 +29,29 @@ function Home ({history}) {
     return (
         <div>
             <AppBar>
-                <Button variant="primary" onClick={logout}>Logout</Button>
+                <div className="app-bar">
+                    <Typography 
+                        color="default"
+                        className="header-text" 
+                        paragraph={true}
+                        variant="h5" 
+                    >
+                        Apax Weather App
+                    </Typography>
+                    <Button 
+                        color="primary"
+                        className="header-text"
+                        onClick={logout}  
+                        variant="contained" 
+                    >
+                        Logout
+                    </Button>
+                </div>
             </AppBar>
-            <Typography variant="subtitle1" paragraph={true}>
-                Welcome to Apax Weather
-            </Typography>
-            <Typography variant="body1">
-                Please enter a location you would like to see the weather for:  
-            </Typography>
-            <LocationInput/>
-            <LocationList locations={savedLocations} loading={loadingSavedLocations}/>
+            <div className="content">
+                <LocationInput updateLocations={loadWeatherData} />
+                <LocationList locations={savedLocations} loading={loadingSavedLocations} refresh={loadWeatherData}/>
+            </div>
         </div>
     );
 }

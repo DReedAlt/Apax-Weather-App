@@ -1,32 +1,28 @@
 import React from 'react';
-import {CircularProgress} from '@material-ui/core';
+import {Button, CircularProgress, Grid, Typography } from '@material-ui/core';
 import WeatherDisplay from './WeatherDisplay.jsx';
 
-const kToF = k => {
-    return (k - 273.15) * (9 / 5) + 32;
-};
-
-export default function LocationList({locations, loading}) {
+export default function LocationList({locations, loading, refresh}) {
     if (loading) return <CircularProgress />
     return (
-        <ul>
-            { locations ?
-                locations.map(location => {
-                    const description = location.weather ? location.weather[0].description : '';
-                    const temperature = location.main ? Math.floor(kToF(location.main.temp)) : '';
-                    const locationData = location.name ? {
-                        city: location.name,
-                        country: location.sys && location.sys.country
-                    } : {};
-                    return (
-                        <li>
-                            <WeatherDisplay description={description} temperature={temperature} location={locationData} />
-                        </li>
-                    )
-                })
-                :
-                null
-            }
-        </ul>
+        <div className="saved-locations-list">
+            <div>
+                <Typography variant="h6">Your saved locations:</Typography>
+                <Button variant="text" onClick={refresh}>Refresh</Button>
+            </div>
+            <Grid container spacing={3}>
+                { locations ?
+                    locations.map(location => {
+                        return (
+                            <Grid item xs={3}>
+                                <WeatherDisplay locationWeather={location} />
+                            </Grid>
+                        )
+                    })
+                    :
+                    null
+                }
+            </Grid>
+        </div>
     );
 }
