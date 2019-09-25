@@ -6,7 +6,7 @@
     "scripts": {
         "start": "SET NODE_ENV=develop && nodemon server",
         "build": "webpack -w",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha ./server/tests/*.test.js --exit"
     },
     "author": "",
     "license": "ISC",
@@ -38,9 +38,8 @@
         "chai-http": "^4.3.0",
         "html-loader": "^0.5.5",
         "html-webpack-plugin": "^3.2.0",
-        "jest": "^24.9.0",
         "mocha": "^6.2.0",
-        "supertest": "^4.0.2",
+        "sinon": "^7.5.0",
         "webpack": "^4.40.2",
         "webpack-cli": "^3.3.9"
     }

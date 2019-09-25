@@ -21,7 +21,7 @@ router.post('/locationCurrentWeather', async (req, res, next) => {
 });
 
 router.get('/savedLocations', async (req, res, next) => {
-    const userId = req.user.id;
+    const userId = req.user && req.user.id;
     try {
         const user = await User.findById(userId);
         const {savedLocations} = user; 
@@ -34,7 +34,7 @@ router.get('/savedLocations', async (req, res, next) => {
 });
 
 router.post('/saveLocation', async (req, res, next) => {
-    const userId = req.user.id;
+    const userId = req.user && req.user.id;
     const {zipCode, countryCode} = req.body;
     const location = `${zipCode},${countryCode}`;
     try {
