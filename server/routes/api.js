@@ -4,7 +4,7 @@ const User = require('../db/models/User.js');
 
 const buildOWMQuery = ({zipCode, countryCode, fullLocation}) => {
     const baseUrl = 'api.openweathermap.org/data/2.5/weather';
-    const keyQuery = `appid=${process.env.OWM_KEY}`;
+    const keyQuery = `appid=${process.env.OWM_KEY || '0a2256ee12ae9ff8ea486341601e0ac9'}`;
     let queryString = fullLocation ? fullLocation : `${zipCode},${countryCode}`;
     return `https://${baseUrl}?zip=${queryString}&${keyQuery}`;
 }
