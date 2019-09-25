@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, FormLabel, TextField, Typography } from '@material-ui/core';
+import { Button, Card, FormLabel, TextField, Typography } from '@material-ui/core';
 import axios from 'axios';
 
 function Login ({history, updateLoggedIn}) {
@@ -19,9 +19,9 @@ function Login ({history, updateLoggedIn}) {
     }
 
     return (
-        <div>
-            <form onSubmit={login}>
-                <FormLabel>Login</FormLabel>
+        <Card className="auth-card">
+            <form className="auth-form" onSubmit={login}>
+                <FormLabel>Apax Weather Login</FormLabel>
                 <TextField
                     label="user name"
                     name="username"
@@ -31,12 +31,18 @@ function Login ({history, updateLoggedIn}) {
                     name="password"
                     type="password"
                 />
-                <Button variant="primary" type="submit">Login</Button>
+                <Button 
+                    className="auth-button" 
+                    variant="contained"     
+                    type="submit"
+                >
+                    Login
+                </Button>
             </form>
-            <Typography>
+            <Typography className="signin-message">
                 If you would like to create an account, <Link to='/signup'>sign up here!</Link>
             </Typography>
-        </div>
+        </Card>
     );
 };
 

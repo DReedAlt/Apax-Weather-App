@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, FormLabel, TextField } from '@material-ui/core';
+import { Button, Card, FormLabel, TextField } from '@material-ui/core';
 import axios from 'axios';
 
 function Signup ({history, updateLoggedIn}) {
@@ -37,27 +37,35 @@ function Signup ({history, updateLoggedIn}) {
     }
 
     return (
-        <form onSubmit={signup}>
-            <FormLabel>Sign Up</FormLabel>
-            <TextField
-                label="user name"
-                name="username"
-            />
-            <TextField
-                label="password"
-                name="password"
-                type="password"
-                onChange={handlePassword}
-            />
-            <TextField
-                label="verify password"
-                name="verifyPassword"
-                error={verifyDirty && (password !== verifyPassword)}
-                type="password"
-                onChange={handleVerifyPassword}
-            />
-            <Button variant="primary" type="submit">Sign Up</Button>
-        </form>
+        <Card className="auth-card">
+            <form className="auth-form" onSubmit={signup}>
+                <FormLabel>Sign Up</FormLabel>
+                <TextField
+                    label="user name"
+                    name="username"
+                />
+                <TextField
+                    label="password"
+                    name="password"
+                    type="password"
+                    onChange={handlePassword}
+                />
+                <TextField
+                    label="verify password"
+                    name="verifyPassword"
+                    error={verifyDirty && (password !== verifyPassword)}
+                    type="password"
+                    onChange={handleVerifyPassword}
+                />
+                <Button 
+                    className="auth-button" 
+                    variant="contained" 
+                    type="submit"
+                >
+                    Sign Up
+                </Button>
+            </form>
+        </Card>
     );
 };
 

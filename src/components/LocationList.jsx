@@ -10,7 +10,7 @@ export default function LocationList({locations, loading, refresh}) {
                 <Typography variant="h6">Your saved locations:</Typography>
                 <Button variant="text" onClick={refresh}>Refresh</Button>
             </div>
-            <Grid container spacing={3}>
+            <Grid container spacing={20}>
                 { locations ?
                     locations.map(location => {
                         return (
