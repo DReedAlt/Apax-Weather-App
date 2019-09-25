@@ -8,4 +8,4 @@ after git cloning, cd into the project folder and:
 - `npm start` to start the server and go to `localhost:8888`
 - You will need to sign up at `/signup` to login and view the main app
 
-**Note:** normally I would hide the weather api key in a secrets.js file, but since it's just a trial key and this is a private repo, I figured it would be easier to just include it in the code rather than send over a secrets file.
+**Note:** normally I would hide the weather api key in a secrets.js file, but since it's just a trial key and this is a private repo, I figured it would be easier to just include it in the code rather than send over a secrets file outside of github.
