@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon server",
+        "start": "node server",
         "start-dev": "SET NODE_ENV=develop && nodemon server",
         "build": "webpack",
         "build-watch": "webpack -w",
