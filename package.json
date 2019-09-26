@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "start": "SET NODE_ENV=develop && nodemon server",
-        "build": "webpack -w",
+        "build": "webpack",
+        "build-watch": "webpack -w",
         "test": "mocha ./server/tests/*.test.js --exit"
     },
     "author": "",
