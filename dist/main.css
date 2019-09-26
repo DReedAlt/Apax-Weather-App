@@ -1,0 +1,110 @@
+html {
+    background-color: lightgray;
+}
+
+body {
+    margin: 0;
+}
+
+#app {
+    height: 100vh;
+}
+
+.auth-card {
+    width: 40%;
+    margin: 150px auto;
+    padding: 10px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 30px;
+}
+
+.auth-button {
+    margin-top: 20px;
+}
+
+.signin-message {
+    margin: 10px 30px;
+}
+
+.hide {
+    display: none !important;
+}
+
+.app-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.header-text {
+    width: fit-content;
+    margin: 8px !important;
+    color: white;
+    box-shadow: none !important;
+}
+
+.content {
+    padding-top: 100px;
+}
+
+.location-input {
+    display: flex;
+}
+
+.half-width {
+    width: 50%;
+}
+
+.white-background {
+    background-color: white;
+}
+
+.location-input-card {
+    width: 300px;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.location-input-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    min-height: 200px;
+    width: inherit
+}
+
+.location-input {
+    margin: 5px;
+}
+
+.weather-display {
+    width: 120px;
+    padding: 15px;
+    text-align: center;
+    margin: 20px;
+}
+
+.weather-info {
+    padding-top: 15px;
+}
+
+.img-container {
+    background-color: lightgray;
+    border-radius: 10px;
+}
+
+.saved-locations-list {
+    margin: 25px auto;
+    min-width: 700px;
+    width: 70%;
+}
